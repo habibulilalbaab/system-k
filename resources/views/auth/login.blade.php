@@ -93,7 +93,7 @@
               </div>
               <div class="p-4 p-xl-5 d-xl-flex justify-content-between align-items-center fs-sm">
                 <p class="fw-medium text-white-50 mb-0">
-                  <strong>{{env('APP_NAME')}} 1.0</strong> &copy; <span data-toggle="year-copy"></span>
+                  <strong>{{env('APP_NAME')}} {{env('APP_VERSION')}}</strong> &copy; <span data-toggle="year-copy"></span>
                 </p>
               </div>
             </div>
@@ -130,7 +130,7 @@
                       <form class="js-validation-signin" action="{{ route('login') }}" method="POST">
                         @csrf
                         <div class="mb-4">
-                          <input type="text" required class="form-control form-control-lg form-control-alt py-3 @error('email') is-invalid @enderror" id="login-username" name="email" placeholder="E-mail" value="{{ old('email') }}">
+                          <input type="email" required class="form-control form-control-lg form-control-alt py-3 @error('email') is-invalid @enderror" id="login-username" name="email" placeholder="E-mail" value="{{ old('email') }}">
                           @error('email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -165,7 +165,7 @@
               </div>
               <div class="px-4 py-3 w-100 d-lg-none d-flex flex-column flex-sm-row justify-content-between fs-sm text-center text-sm-start">
                 <p class="fw-medium text-black-50 py-2 mb-0">
-                  <strong>{{env('APP_NAME')}} 1.0</strong> &copy; <span data-toggle="year-copy"></span>
+                  <strong>{{env('APP_NAME')}} {{env('APP_VERSION')}}</strong> &copy; <span data-toggle="year-copy"></span>
                 </p>
               </div>
             </div>

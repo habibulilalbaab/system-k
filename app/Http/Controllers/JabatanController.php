@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Jabatan;
+use App\Models\UserDetail;
 
-class DashboardController extends Controller
+class JabatanController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('permission:view dashboard', ['only' => ['index']]);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +15,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        $jabatan = Jabatan::all();
+        return view('configuration.jabatan', compact(
+            'jabatan'
+        ));
     }
 
     /**
@@ -38,7 +39,10 @@ class DashboardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Jabatan::create([
+            'jabatan' => $request->jabatan
+        ]);
+        return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Jabatan berhasil ditambahkan!'});</script>");
     }
 
     /**
@@ -83,6 +87,11 @@ class DashboardController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(UserDetail::where('jabatan_id', $id)->count() <= 0){
+            Jabatan::where('id', $id)->delete();
+            return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Jabatan berhasil dihapus!'});</script>");
+        }else{
+        return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'danger', icon: 'fa fa-check me-1', message: 'Jabatan gagal dihapus, masih digunakan oleh pengguna!'});</script>");
+        }
     }
 }

@@ -93,7 +93,7 @@
               </div>
               <div class="p-4 p-xl-5 d-xl-flex justify-content-between align-items-center fs-sm">
                 <p class="fw-medium text-white-50 mb-0">
-                  <strong>{{env('APP_NAME')}} 1.0</strong> &copy; <span data-toggle="year-copy"></span>
+                  <strong>{{env('APP_NAME')}} {{env('APP_VERSION')}}</strong> &copy; <span data-toggle="year-copy"></span>
                 </p>
               </div>
             </div>
@@ -130,7 +130,7 @@
                       <form class="js-validation-signup" action="{{ route('register') }}" method="POST">
                         @csrf
                         <div class="mb-4">
-                          <input type="text" required class="form-control form-control-lg form-control-alt py-3 @error('name') is-invalid @enderror" id="signup-username" name="name" placeholder="Name" value="{{ old('name') }}">
+                          <input type="text" required class="form-control form-control-lg form-control-alt py-2 @error('name') is-invalid @enderror" id="signup-user" name="name" placeholder="Name" value="{{ old('name') }}">
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -138,7 +138,56 @@
                             @enderror
                         </div>
                         <div class="mb-4">
-                          <input type="email" required class="form-control form-control-lg form-control-alt py-3 @error('email') is-invalid @enderror" id="signup-email" name="email" placeholder="Email" value="{{ old('email') }}">
+                          <input type="number" required class="form-control form-control-lg form-control-alt py-2 @error('nip') is-invalid @enderror" id="signup-nip" name="nip" placeholder="NIP" value="{{ old('nip') }}">
+                            @error('nip')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>NIP Harus Diisi dengan benar</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                          <input type="number" required class="form-control form-control-lg form-control-alt py-2 @error('payroll') is-invalid @enderror" id="signup-payroll" name="payroll" placeholder="Payroll" value="{{ old('payroll') }}">
+                            @error('payroll')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>Payroll Harus Diisi dengan benar</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                          <select name="jabatan_id" required class="form-control form-control-lg form-control-alt py-2 " id="signup-jabatan">
+                            <option selected disabled>Pilih Jabatan</option>
+                            @php $jabatan = \App\Models\Jabatan::all(); @endphp
+                            @foreach($jabatan as $jabatan)
+                            <option value="{{$jabatan->id}}">{{$jabatan->jabatan}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div class="mb-4">
+                          <select name="status_karyawan" required class="form-control form-control-lg form-control-alt py-2 " id="signup-status_karyawan">
+                            <option selected disabled>Pilih Status Karyawan</option>
+                            <option value="Tetap">Tetap</option>
+                            <option value="TAD Admin">TAD Admin</option>
+                            <option value="TAD Non Admin">TAD Non Admin</option>
+                          </select>
+                        </div>
+                        <div class="mb-4">
+                          <input type="number" required class="form-control form-control-lg form-control-alt py-2 @error('phone') is-invalid @enderror" id="signup-phone" name="phone" placeholder="Nomor HP" value="{{ old('phone') }}">
+                            @error('phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>Nomor HP Harus Diisi dengan benar</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                          <input type="text" required class="form-control form-control-lg form-control-alt py-2 @error('alamat') is-invalid @enderror" id="signup-alamat" name="address" placeholder="Alamat Lengkap" value="{{ old('alamat') }}">
+                            @error('alamat')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>Alamat Harus Diisi dengan benar</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                          <input type="email" required class="form-control form-control-lg form-control-alt py-2 @error('email') is-invalid @enderror" id="signup-email" name="email" placeholder="Email" value="{{ old('email') }}">
                             @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -146,7 +195,7 @@
                             @enderror
                         </div>
                         <div class="mb-4">
-                          <input type="password" required class="form-control form-control-lg form-control-alt py-3 @error('password') is-invalid @enderror" id="signup-password" name="password" placeholder="Password">
+                          <input type="password" required class="form-control form-control-lg form-control-alt py-2 @error('password') is-invalid @enderror" id="signup-password" name="password" placeholder="Password">
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -154,7 +203,7 @@
                             @enderror
                         </div>
                         <div class="mb-4">
-                          <input type="password" required class="form-control form-control-lg form-control-alt py-3" id="signup-password-confirm" name="password_confirmation" placeholder="Confirm Password">
+                          <input type="password" required class="form-control form-control-lg form-control-alt py-2" id="signup-password-confirm" name="password_confirmation" placeholder="Confirm Password">
                         </div>
                         <div class="mb-4">
                           <div class="d-md-flex align-items-md-center justify-content-md-between">
@@ -180,7 +229,7 @@
               </div>
               <div class="px-4 py-3 w-100 d-lg-none d-flex flex-column flex-sm-row justify-content-between fs-sm text-center text-sm-start">
                 <p class="fw-medium text-black-50 py-2 mb-0">
-                  <strong>{{env('APP_NAME')}} 1.0</strong> &copy; <span data-toggle="year-copy"></span>
+                  <strong>{{env('APP_NAME')}} {{env('APP_VERSION')}}</strong> &copy; <span data-toggle="year-copy"></span>
                 </p>
               </div>
             </div>
