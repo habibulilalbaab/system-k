@@ -21,12 +21,16 @@ Route::group(['middleware' => ['auth']], function() {
     
 });
 Route::group(['middleware' => ['role:super-admin']], function () {
+    Route::prefix('pinjaman')->group(function () {
+        Route::resource('pengajuan', App\Http\Controllers\PengajuanPinjamanController::class);
+    });
     Route::prefix('configuration')->group(function () {
         Route::get('users/approved/{id}', [App\Http\Controllers\UsersController::class, 'approvedUser'])->name('approvedUser');
         Route::get('users/reject/{id}', [App\Http\Controllers\UsersController::class, 'rejectUser'])->name('rejectUser');
         Route::resource('users', App\Http\Controllers\UsersController::class);
         Route::resource('roles', App\Http\Controllers\RolesController::class);
         Route::resource('jabatan', App\Http\Controllers\JabatanController::class);
+        Route::resource('system', App\Http\Controllers\SystemController::class);
     });
 });
 

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\ApprovedUser;
+use App\Models\System;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -42,6 +43,14 @@ class PermissionDemoSeeder extends Seeder
         ApprovedUser::create([
             'user_id' => 1,
             'approved' => 1
+        ]);
+        System::create([
+            'nama_koperasi' => 'Koperasi Karyawan\nBank Jatim Cabang Mojokerto',
+            'ketua_koperasi' => 1,
+            'finance_koperasi' => 1,
+            'minimum_pinjaman' => 3000000,
+            'bunga_pinjaman' => 1.5,
+            'alamat_koperasi' => 'Jl. A. YANI No.20\nMOJOKERTO',
         ]);
 
         $userKaryawan = User::factory()->create([
