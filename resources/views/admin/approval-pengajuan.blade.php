@@ -21,7 +21,7 @@
 @endsection
 
 @php 
-$title = 'Pengajuan Pinjaman';
+$title = 'Approval Pengajuan Pinjaman';
 @endphp
 @section('content')
       <!-- Main Container -->
@@ -58,11 +58,6 @@ $title = 'Pengajuan Pinjaman';
 
         <!-- Page Content -->
         <div class="content">
-        <div class="row mb-3">
-            <div class="col-12">
-                <a data-bs-toggle="modal" data-bs-target="#modal-add-jabatan" class="btn btn-primary float-right">Ajukan Pinjaman</a>
-            </div>
-        </div>
           <!-- Dynamic Table Full Pagination -->
           <div class="block block-rounded">
             <div class="block-header block-header-default">
@@ -104,7 +99,7 @@ $title = 'Pengajuan Pinjaman';
                     <td>Rp. {{number_format($listPengajuan->jumlah_pinjaman,2,',','.')}}</td>
                     <td>{{$listPengajuan->tenor_pinjaman}} bulan</td>
                     <td>
-                      <a href="{{route('pengajuan.show', $listPengajuan->id)}}" class="btn btn-sm btn-outline-primary">Detail Pengajuan</a>
+                      <a href="{{route('approval-pengajuan-pinjaman.show', $listPengajuan->id)}}" class="btn btn-sm btn-outline-primary">Proses Pengajuan</a>
                     </td>
                   </tr>
                   @endforeach
@@ -117,48 +112,4 @@ $title = 'Pengajuan Pinjaman';
         <!-- END Page Content -->
       </main>
       <!-- END Main Container -->
-      <!-- Large Block Modal -->
-      <div class="modal" id="modal-add-jabatan" tabindex="-1" role="dialog" aria-labelledby="modal-add-jabatan" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-            <div class="block block-rounded block-transparent mb-0">
-              <div class="block-header block-header-default">
-                <h3 class="block-title">Tambah Pengajuan</h3>
-              </div>
-              <div class="block-content fs-sm">
-              <form method="POST" action="{{route('pengajuan.store')}}">
-                @csrf
-                <div class="mb-3">
-                  <label for="jumlah_pinjaman">Jumlah Pinjaman (angka)</label>
-                  <input type="number" required class="form-control form-control-lg" name="jumlah_pinjaman" id="jumlah_pinjaman" placeholder="min (Rp. {{number_format(\App\Models\System::first()->minimum_pinjaman,2,',','.')}})">
-                </div>
-                <div class="mb-3">
-                  <label for="jumlah_pinjaman">Tenor Pinjaman (bulan)</label>
-                  <input type="number" required class="form-control form-control-lg" name="tenor_pinjaman" id="tenor_pinjaman" placeholder="12">
-                </div>
-                <div class="mb-3">
-                  <button type="button" onclick="simulasiCicilan()" class="btn btn-sm btn-warning" id="simulasi_cicilan">Hitung Simulasi Cicilan</button> 
-                  <span class="text-success" id="hasil_simulasi_cicilan" style="float: right;margin-right: 20px;"></span>
-                </div>
-              </div>
-              <div class="block-content block-content-full text-end bg-body">
-                <button type="button" class="btn btn-sm btn-alt-secondary me-1" data-bs-dismiss="modal">Batalkan</button>
-                <button type="submit" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Ajukan Pinjaman</button>
-              </div>
-                </form>
-              <script>
-                function simulasiCicilan(){
-                  jumlah_pinjaman = document.getElementById("jumlah_pinjaman").value;
-                  tenor_pinjaman = document.getElementById("tenor_pinjaman").value;
-                  bunga = {{\App\Models\System::first()->bunga_pinjaman}};
-                  var simulasi = (jumlah_pinjaman*bunga)/tenor_pinjaman
-
-                  document.getElementById("hasil_simulasi_cicilan").innerHTML = "Cicilan: Rp. "+simulasi.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+" /bulan";
-                }
-              </script>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- END Large Block Modal -->
 @endsection

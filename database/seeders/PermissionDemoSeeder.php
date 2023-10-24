@@ -45,12 +45,12 @@ class PermissionDemoSeeder extends Seeder
             'approved' => 1
         ]);
         System::create([
-            'nama_koperasi' => 'Koperasi Karyawan\nBank Jatim Cabang Mojokerto',
+            'nama_koperasi' => 'Koperasi Karyawan <br>Bank Jatim Cabang Mojokerto',
             'ketua_koperasi' => 1,
             'finance_koperasi' => 1,
             'minimum_pinjaman' => 3000000,
             'bunga_pinjaman' => 1.5,
-            'alamat_koperasi' => 'Jl. A. YANI No.20\nMOJOKERTO',
+            'alamat_koperasi' => 'Jl. A. YANI No.20 <br>MOJOKERTO',
         ]);
 
         $userKaryawan = User::factory()->create([

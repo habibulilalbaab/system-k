@@ -28,6 +28,12 @@
               <li class="nav-main-item">
                 <a class="nav-main-link" href="{{route('jabatan.index')}}">
                   <i class="nav-main-link-icon far fa-id-badge"></i>
+                  <span class="nav-main-link-name">Semua Pinjaman</span>
+                </a>
+              </li>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="{{route('approval-pengajuan-pinjaman.index')}}">
+                  <i class="nav-main-link-icon far fa-circle-check"></i>
                   <span class="nav-main-link-name">Approval Pinjaman</span>
                 </a>
               </li>

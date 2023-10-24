@@ -18,7 +18,7 @@ class CreatePengajuanPinjamenTable extends Migration
             $table->string('user_id');
             $table->string('jumlah_pinjaman');
             $table->string('tenor_pinjaman');
-            $table->string('status_pinjaman'); // 0 draft, 1 sudah upload, 2 menunggu ttd ketua kop, 3 menunggu ttd finance, 4 pprove & pencairan, 5 lunas, 6 ditolak
+            $table->string('status_pinjaman'); // 0 draft, 1 sudah upload, 2 menunggu ttd ketua kop, 3 menunggu ttd finance, 4 approve & pencairan, 5 lunas, 6 ditolak
             $table->timestamps();
         });
     }

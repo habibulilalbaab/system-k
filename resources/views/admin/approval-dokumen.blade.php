@@ -55,7 +55,6 @@ $title = 'Dokumen Pengajuan Pinjaman';
               <!-- Updates -->
               <ul class="timeline timeline-alt py-0">
                 @foreach($pengajuanlog as $pengajuanlog)
-                @if($pengajuanlog->for_admin != 1)
                 <li class="timeline-event">
                   <div class="timeline-event-icon bg-success">
                     <i class="{{$pengajuanlog->icon}}"></i>
@@ -79,10 +78,11 @@ $title = 'Dokumen Pengajuan Pinjaman';
                       @if($pengajuanlog->doc_path != NULL)
                       <a href="{{asset($pengajuanlog->doc_path)}}" class="btn btn-sm btn-primary" target="_blank">{{$pengajuanlog->doc_label}}</a>
                       @elseif($pengajuanlog->is_doc == 1)
-                      <form action="{{route('dokumen-pengajuan.store')}}" method="post" class="mt-3 mb-5" enctype="multipart/form-data">
+                      <form action="{{route('approval-pengajuan-pinjaman.store')}}" method="post" class="mt-3 mb-5" enctype="multipart/form-data">
                         @csrf
                         <input type="file" class="form-control" name="filedoc-first-upload" accept=".pdf" required>
                         <input type="hidden" name="id" value="{{$pengajuanlog->id}}">
+                        <input type="hidden" name="type" value="@if($pengajuan->status_pinjaman == 2) ketua @elseif($pengajuan->status_pinjaman == 3) finance @endif">
                         <input type="hidden" name="pengajuan_id" value="{{$pengajuanlog->pengajuan_id}}">
                         <div class="float-right">
                             <button type="submit" class="btn btn-sm btn-info mt-2">Unggah Dokumen</button>
@@ -92,7 +92,6 @@ $title = 'Dokumen Pengajuan Pinjaman';
                     </div>
                   </div>
                 </li>
-                @endif
                 @endforeach
               </ul>
               <!-- END Updates -->
@@ -150,6 +149,26 @@ $title = 'Dokumen Pengajuan Pinjaman';
                 </div>
               </div>
               <!-- END Products -->
+
+              <div class="block block-rounded">
+                <div class="block-header block-header-default">
+                  <h3 class="block-title">
+                    <i class="fa fa-briefcase text-muted me-1"></i> Action
+                  </h3>
+                  <div class="block-options">
+                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                      <i class="si si-refresh"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="block-content mb-3">
+                  <form action="{{route('approval-pengajuan-pinjaman.destroy', $pengajuan->id)}}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-outline-warning mb-3">Tolak Pengajuan</button>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         </div>

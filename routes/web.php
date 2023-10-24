@@ -23,6 +23,8 @@ Route::group(['middleware' => ['auth']], function() {
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::prefix('pinjaman')->group(function () {
         Route::resource('pengajuan', App\Http\Controllers\PengajuanPinjamanController::class);
+        Route::resource('dokumen-pengajuan', App\Http\Controllers\DokumenPinjamanController::class);
+        Route::resource('approval-pengajuan-pinjaman', App\Http\Controllers\Admin\ApprovalPengajuanPinjamanController::class);
     });
     Route::prefix('configuration')->group(function () {
         Route::get('users/approved/{id}', [App\Http\Controllers\UsersController::class, 'approvedUser'])->name('approvedUser');
