@@ -56,7 +56,7 @@ class DokumenPinjamanController extends Controller
         PengajuanPinjamanLog::create([
             'pengajuan_id' => $request->pengajuan_id,
             'title' => "Menunggu Verifikasi",
-            'icon' => "si si-notebook",
+            'icon' => "far fa-hourglass-half",
             'description' => "Menunggu dokumen di tandatangani oleh ketua koperasi",
             'is_doc' => 0,
             'is_url' => 0,
@@ -64,7 +64,7 @@ class DokumenPinjamanController extends Controller
         PengajuanPinjamanLog::create([
             'pengajuan_id' => $request->pengajuan_id,
             'title' => "Verifikasi Ketua Koperasi",
-            'icon' => "si si-notebook",
+            'icon' => "far fa-square-check",
             'description' => "Silahkan unduh dan tanda tangani form pengajuan pinjaman dari ".Auth::user()->name." dan upload kembali dalam bentuk pdf dari dokumen hasil approval ketua koperasi",
             'is_doc' => 1,
             'is_url' => 1,

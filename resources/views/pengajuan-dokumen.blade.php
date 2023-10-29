@@ -17,11 +17,11 @@ $title = 'Dokumen Pengajuan Pinjaman';
             <div class="row items-push text-center">
               <div class="col-6 col-md-4">
                 <div class="fs-sm fw-semibold text-muted text-uppercase">Tanggal</div>
-                <a class="link-fx fs-3" href="javascript:void(0)">{{date('l, d F Y', strtotime($pengajuan->created_at))}}</a>
+                <a class="link-fx fs-4" href="javascript:void(0)">{{date('l, d F Y', strtotime($pengajuan->created_at))}}</a>
               </div>
               <div class="col-6 col-md-4">
                 <div class="fs-sm fw-semibold text-muted text-uppercase">Status</div>
-                <a class="link-fx fs-3" href="javascript:void(0)">
+                <a class="link-fx fs-4" href="javascript:void(0)">
                     @if($pengajuan->status_pinjaman == 0)
                     <span class="text-warning">Draft</span>
                     @elseif($pengajuan->status_pinjaman == 1)
@@ -41,7 +41,7 @@ $title = 'Dokumen Pengajuan Pinjaman';
               </div>
               <div class="col-6 col-md-4">
                 <div class="fs-sm fw-semibold text-muted text-uppercase">Jumlah</div>
-                <a class="link-fx fs-3" href="javascript:void(0)">Rp. {{number_format($pengajuan->jumlah_pinjaman,2,',','.')}}</a>
+                <a class="link-fx fs-4" href="javascript:void(0)">Rp. {{number_format($pengajuan->jumlah_pinjaman,2,',','.')}}</a>
               </div>
             </div>
           </div>
@@ -143,9 +143,6 @@ $title = 'Dokumen Pengajuan Pinjaman';
                       <div class="fw-semibold">Angsuran perbulan</div>
                       <div class="fs-sm">Rp. {{number_format(($pengajuan->jumlah_pinjaman*\App\Models\System::first()->bunga_pinjaman)/$pengajuan->tenor_pinjaman,2,',','.')}}</div>
                     </div>
-                  </div>
-                  <div class="text-center push">
-                    <button type="button" class="btn btn-sm btn-alt-secondary">Pembayaran Angsuran</button>
                   </div>
                 </div>
               </div>

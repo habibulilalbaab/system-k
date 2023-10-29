@@ -20,11 +20,15 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     
 });
+Route::group(['middleware' => ['role:super-admin|karyawan']], function () {
+    Route::resource('pinjaman', App\Http\Controllers\PinjamanController::class);
+    Route::resource('pengajuan', App\Http\Controllers\PengajuanPinjamanController::class);
+    Route::resource('dokumen-pengajuan', App\Http\Controllers\DokumenPinjamanController::class);
+});
 Route::group(['middleware' => ['role:super-admin']], function () {
-    Route::prefix('pinjaman')->group(function () {
-        Route::resource('pengajuan', App\Http\Controllers\PengajuanPinjamanController::class);
-        Route::resource('dokumen-pengajuan', App\Http\Controllers\DokumenPinjamanController::class);
+    Route::prefix('admin')->group(function () {
         Route::resource('approval-pengajuan-pinjaman', App\Http\Controllers\Admin\ApprovalPengajuanPinjamanController::class);
+        Route::resource('list-pengajuan', App\Http\Controllers\Admin\PengajuanPinjamanController::class);
     });
     Route::prefix('configuration')->group(function () {
         Route::get('users/approved/{id}', [App\Http\Controllers\UsersController::class, 'approvedUser'])->name('approvedUser');

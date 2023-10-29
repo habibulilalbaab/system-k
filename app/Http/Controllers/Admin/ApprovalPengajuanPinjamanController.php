@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PengajuanPinjaman;
 use App\Models\PengajuanPinjamanLog;
+use App\Models\Angsuran;
+use App\Models\System;
 use Auth;
 
 class ApprovalPengajuanPinjamanController extends Controller
@@ -17,7 +19,7 @@ class ApprovalPengajuanPinjamanController extends Controller
      */
     public function index()
     {
-        $listPengajuan = PengajuanPinjaman::where('status_pinjaman', '>=', 1)->get();
+        $listPengajuan = PengajuanPinjaman::where('status_pinjaman', '>=', 1)->where('status_pinjaman', '<', 4)->get();
         return view('admin.approval-pengajuan', compact(
             'listPengajuan'
         ));
@@ -54,7 +56,7 @@ class ApprovalPengajuanPinjamanController extends Controller
             PengajuanPinjamanLog::create([
                 'pengajuan_id' => $request->pengajuan_id,
                 'title' => "Menunggu Verifikasi Finance",
-                'icon' => "si si-notebook",
+                'icon' => "far fa-pen-to-square",
                 'description' => "Menunggu dokumen di tandatangani oleh bagian finance koperasi",
                 'is_doc' => 0,
                 'is_url' => 0,
@@ -62,7 +64,7 @@ class ApprovalPengajuanPinjamanController extends Controller
             PengajuanPinjamanLog::create([
                 'pengajuan_id' => $request->pengajuan_id,
                 'title' => "Verifikasi Bag. Finance Koperasi",
-                'icon' => "si si-notebook",
+                'icon' => "far fa-paste",
                 'description' => "Silahkan unduh dan tanda tangani form pengajuan pinjaman dan upload kembali dalam bentuk pdf dari dokumen hasil approval bagian finance koperasi",
                 'is_doc' => 1,
                 'is_url' => 1,
@@ -88,7 +90,7 @@ class ApprovalPengajuanPinjamanController extends Controller
             PengajuanPinjamanLog::create([
                 'pengajuan_id' => $request->pengajuan_id,
                 'title' => "Approve dan Pencairan Pinjaman",
-                'icon' => "si si-notebook",
+                'icon' => "far fa-money-bill-1",
                 'description' => "Selamat, pinjaman telah diterima dan sudah dicairkan kedalam rekening !",
                 'is_doc' => 0,
                 'is_url' => 1,
@@ -98,7 +100,22 @@ class ApprovalPengajuanPinjamanController extends Controller
             PengajuanPinjaman::where('id', $request->pengajuan_id)->update([
                 'status_pinjaman' => 4,
             ]);
-            return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Upload dokumen verifikasi ketua koperasi berhasil!'});</script>");
+            // buat list angsuran
+            $pinjaman = PengajuanPinjaman::where('id', $request->pengajuan_id)->first();
+            $date = strtotime(date('F Y'));
+            $bunga = System::first()->bunga_pinjaman;
+            for ($i=1; $i <= (int)$pinjaman->tenor_pinjaman; $i++) {
+                Angsuran::create([
+                    'pinjaman_id' => $pinjaman->id,
+                    'periode' => '[ Ke-'.$i.' ]',
+                    'tanggal' => '25 '.date('M Y', strtotime("+".$i." month", $date)),
+                    'jumlah' => ($pinjaman->jumlah_pinjaman/$pinjaman->tenor_pinjaman),
+                    'bunga' => (($pinjaman->jumlah_pinjaman/$pinjaman->tenor_pinjaman)*$bunga)-($pinjaman->jumlah_pinjaman/$pinjaman->tenor_pinjaman),
+                    'status' => 0,
+                    'sisa_pinjaman' => ($pinjaman->jumlah_pinjaman*$bunga),
+                ]);
+            }
+            return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Upload dokumen verifikasi finance berhasil!'});</script>");
         }
     }
 
@@ -145,7 +162,7 @@ class ApprovalPengajuanPinjamanController extends Controller
         PengajuanPinjamanLog::create([
             'pengajuan_id' => $id,
             'title' => "Pinjaman Ditolak",
-            'icon' => "si si-notebook",
+            'icon' => "far fa-circle-xmark",
             'description' => "Pinjaman saat ini tidak bisa diproses karena ada alasan tertentu, silahkan hubungi admin koperasi !",
             'is_doc' => 0,
             'is_url' => 0,

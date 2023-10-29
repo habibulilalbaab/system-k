@@ -18,7 +18,7 @@ class PengajuanPinjamanController extends Controller
     public function index()
     {
         $listPengajuan = PengajuanPinjaman::where('user_id', Auth::user()->id)->get();
-        return view('pinjaman.pengajuan', compact(
+        return view('pengajuan', compact(
             'listPengajuan'
         ));
     }
@@ -51,7 +51,7 @@ class PengajuanPinjamanController extends Controller
             PengajuanPinjamanLog::create([
                 'pengajuan_id' => $data->id,
                 'title' => "Melakukan Pengajuan",
-                'icon' => "si si-notebook",
+                'icon' => "far fa-hand-point-up",
                 'description' => Auth::user()->name." baru saja melakukan pengajuan pinjaman sebesar: Rp. ".number_format($request->jumlah_pinjaman)." dalam jangka waktu ".$request->tenor_pinjaman." bulan. ",
                 'is_doc' => 0,
                 'is_url' => 0,
@@ -59,7 +59,7 @@ class PengajuanPinjamanController extends Controller
             PengajuanPinjamanLog::create([
                 'pengajuan_id' => $data->id,
                 'title' => "Lengkapi Dokumen Pengajuan",
-                'icon' => "si si-notebook",
+                'icon' => "far fa-file-pdf",
                 'description' => "Silahkan unduh dokumen dibawah ini kemudian lakukan tanda tangan, selanjutnya silahkan scan dan upload kembali di form dibawah ini. ",
                 'is_doc' => 1,
                 'is_url' => 1,
@@ -85,7 +85,7 @@ class PengajuanPinjamanController extends Controller
         if ($pengajuan->user_id != Auth::user()->id) {
             return "Error 403";
         }
-        return view('pinjaman.pengajuan-dokumen', compact(
+        return view('pengajuan-dokumen', compact(
             'pengajuan',
             'pengajuanlog'
         ));

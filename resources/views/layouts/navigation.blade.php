@@ -13,8 +13,8 @@
                 </a>
               </li>
               <li class="nav-main-item">
-                <a class="nav-main-link" href="{{route('jabatan.index')}}">
-                  <i class="nav-main-link-icon far fa-id-badge"></i>
+                <a class="nav-main-link" href="{{route('pinjaman.index')}}">
+                  <i class="nav-main-link-icon far fa-calendar-days"></i>
                   <span class="nav-main-link-name">Pinjaman Saya</span>
                 </a>
               </li>
@@ -26,8 +26,8 @@
               </li>
               <li class="nav-main-heading">Administrator</li>
               <li class="nav-main-item">
-                <a class="nav-main-link" href="{{route('jabatan.index')}}">
-                  <i class="nav-main-link-icon far fa-id-badge"></i>
+                <a class="nav-main-link" href="{{route('list-pengajuan.index')}}">
+                  <i class="nav-main-link-icon far fa-rectangle-list"></i>
                   <span class="nav-main-link-name">Semua Pinjaman</span>
                 </a>
               </li>

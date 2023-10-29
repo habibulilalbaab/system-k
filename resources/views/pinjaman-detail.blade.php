@@ -7,7 +7,7 @@
 @endsection
 
 @php 
-$title = 'Dokumen Pengajuan Pinjaman';
+$title = 'Detail Pinjaman';
 @endphp
 @section('content')
     <main id="main-container">
@@ -52,49 +52,70 @@ $title = 'Dokumen Pengajuan Pinjaman';
         <div class="content content-boxed">
           <div class="row">
             <div class="col-md-7 col-xl-8">
-              <!-- Updates -->
-              <ul class="timeline timeline-alt py-0">
-                @foreach($pengajuanlog as $pengajuanlog)
-                <li class="timeline-event">
-                  <div class="timeline-event-icon bg-success">
-                    <i class="{{$pengajuanlog->icon}}"></i>
-                  </div>
-                  <div class="timeline-event-block block">
-                    <div class="block-header">
-                      <h3 class="block-title">{{$pengajuanlog->title}}</h3>
-                      <div class="block-options">
-                        <div class="timeline-event-time block-options-item fs-sm">
-                        {{date('l, d F Y H:i:s', strtotime($pengajuanlog->created_at))}}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="block-content block-content-full">
-                      <p class="mb-2">
-                        {{$pengajuanlog->description}}
-                      </p>
-                      @if($pengajuanlog->is_url == 1)
-                      <a href="{{asset($pengajuanlog->url_path)}}" class="btn btn-sm btn-info" target="_blank">{{$pengajuanlog->url_label}}</a>
-                      @endif
-                      @if($pengajuanlog->doc_path != NULL)
-                      <a href="{{asset($pengajuanlog->doc_path)}}" class="btn btn-sm btn-primary" target="_blank">{{$pengajuanlog->doc_label}}</a>
-                      @elseif($pengajuanlog->is_doc == 1)
-                      <form action="{{route('approval-pengajuan-pinjaman.store')}}" method="post" class="mt-3 mb-5" enctype="multipart/form-data">
-                        @csrf
-                        <input type="file" class="form-control" name="filedoc-first-upload" accept=".pdf" required>
-                        <input type="hidden" name="id" value="{{$pengajuanlog->id}}">
-                        <input type="hidden" name="type" value="@if($pengajuan->status_pinjaman == 2) ketua @elseif($pengajuan->status_pinjaman == 3) finance @endif">
-                        <input type="hidden" name="pengajuan_id" value="{{$pengajuanlog->pengajuan_id}}">
-                        <div class="float-right">
-                            <button type="submit" class="btn btn-sm btn-info mt-2">Unggah Dokumen</button>
-                        </div>
-                      </form>
-                      @endif
-                    </div>
-                  </div>
-                </li>
-                @endforeach
-              </ul>
-              <!-- END Updates -->
+              <!-- table -->
+              <!-- Striped Table -->
+              <div class="block block-rounded">
+                <div class="block-header block-header-default">
+                  <h3 class="block-title">Angsuran Pinjaman</h3>
+                </div>
+                <div class="block-content" style="font-size:11pt;">
+                  <table class="table table-striped table-vcenter">
+                    <thead>
+                      <tr>
+                        <th>Ke</th>
+                        <th>Tanggal</th>
+                        <th>Pokok</th>
+                        <th>Bunga</th>
+                        <th>Jumlah</th>
+                        <th class="d-none d-sm-table-cell" style="width: 10%;">Status</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($angsuran as $angsuran)
+                      <tr>
+                        <td>{{$angsuran->periode}}</td>
+                        <td>{{$angsuran->tanggal}}</td>
+                        <td> Rp. {{number_format($angsuran->jumlah)}} </td>
+                        <td> Rp. {{number_format($angsuran->bunga)}} </td>
+                        <td> Rp. {{number_format($angsuran->jumlah+$angsuran->bunga)}} </td>
+                        <td class="d-none d-sm-table-cell">
+                          @if($angsuran->status == 0)
+                          <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger">Unpaid</span>
+                          @elseif($angsuran->status == 1)
+                          <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Verifikasi</span>
+                          @elseif($angsuran->status == 2)
+                          <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">Paid</span>
+                          @endif
+                        </td>
+                        <td class="text-center">
+                          <div class="btn-group">
+                            @if($angsuran->status == 0)
+                            <form action="{{route('pinjaman.update', $angsuran->id)}}" method="post">
+                              @csrf
+                              @method('PUT')
+                              <button type="submit" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Konfirmasi Sudah Melakukan Pembayaran">
+                                <i class="fa fa-fw fa-check-double"></i>
+                              </button>
+                            </form>
+                            @elseif($angsuran->status == 1)
+                            <button type="button" class="btn btn-sm btn-alt-secondary disabled" data-bs-toggle="tooltip" title="Konfirmasi Sudah Melakukan Pembayaran">
+                              <i class="fa fa-fw fa-clock"></i>
+                            </button>
+                            @elseif($angsuran->status == 2)
+                            <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Unduh Bukti Pembayaran">
+                              <i class="fa fa-fw fa-download"></i>
+                            </button>
+                            @endif
+                          </div>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- END Striped Table -->
             </div>
             <div class="col-md-5 col-xl-4">
               <!-- Products -->
@@ -143,6 +164,17 @@ $title = 'Dokumen Pengajuan Pinjaman';
                       <div class="fs-sm">Rp. {{number_format(($pengajuan->jumlah_pinjaman*\App\Models\System::first()->bunga_pinjaman)/$pengajuan->tenor_pinjaman,2,',','.')}}</div>
                     </div>
                   </div>
+                  <div class="d-flex align-items-center push">
+                    <div class="flex-shrink-0 me-3">
+                      <a class="item item-rounded bg-primary" href="javascript:void(0)">
+                        <i class="fa fa-hourglass-half fa-2x text-white-75"></i>
+                      </a>
+                    </div>
+                    <div class="flex-grow-1">
+                      <div class="fw-semibold">Sisa Angsuran</div>
+                      <div class="fs-sm">Rp. {{number_format($sisaAngsuran->sisa_pinjaman,2,',','.')}}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <!-- END Products -->
@@ -159,11 +191,8 @@ $title = 'Dokumen Pengajuan Pinjaman';
                   </div>
                 </div>
                 <div class="block-content mb-3">
-                  <form action="{{route('approval-pengajuan-pinjaman.destroy', $pengajuan->id)}}" method="post">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-sm btn-outline-warning mb-3">Tolak Pengajuan</button>
-                  </form>
+                    <a href="{{asset($approvalDoc->url_path)}}" class="btn btn-sm btn-outline-primary mb-3">{{$approvalDoc->url_label}}</a>
+                    <a href="#" class="btn btn-sm btn-outline-warning mb-3">TopUp Pinjaman</a>
                 </div>
               </div>
             </div>
