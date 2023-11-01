@@ -44,9 +44,9 @@
                 </a>
               </li>
               <li class="nav-main-item">
-                <a class="nav-main-link" href="{{route('jabatan.index')}}">
-                  <i class="nav-main-link-icon far fa-id-badge"></i>
-                  <span class="nav-main-link-name">Pembayaran</span>
+                <a class="nav-main-link" href="{{route('pembayaran.index')}}">
+                  <i class="nav-main-link-icon fa fa-money-check-dollar"></i>
+                  <span class="nav-main-link-name">Catat Pembayaran</span>
                 </a>
               </li>
               @role('super-admin')

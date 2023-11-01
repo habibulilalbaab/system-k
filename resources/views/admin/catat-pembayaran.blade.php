@@ -7,7 +7,7 @@
 @endsection
 
 @php 
-$title = 'Detail Pinjaman';
+$title = 'Catat Pembayaran';
 @endphp
 @section('content')
     <main id="main-container">
@@ -91,17 +91,22 @@ $title = 'Detail Pinjaman';
                         <td class="text-center">
                           <div class="btn-group">
                             @if($angsuran->status == 0)
-                            <form action="{{route('pinjaman.update', $angsuran->id)}}" method="post">
+                              <button type="button" onclick="markPaid('{{$angsuran->id}}')" class="btn btn-sm btn-alt-secondary" data-bs-toggle="modal" data-bs-target="#modal-block-normal" title="Approve Pembayaran">
+                                <i class="fa fa-fw fa-check-double"></i>
+                              </button>
+                            @elseif($angsuran->status == 1)
+                              <button type="button" onclick="markPaid('{{$angsuran->id}}')" class="btn btn-sm btn-alt-secondary" data-bs-toggle="modal" data-bs-target="#modal-block-normal" title="Approve Pembayaran">
+                                <i class="fa fa-fw fa-check-double"></i>
+                              </button>
+
+                            <form action="{{route('pembayaran.update', $angsuran->id)}}" method="post">
                               @csrf
                               @method('PUT')
-                              <button type="submit" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Konfirmasi Sudah Melakukan Pembayaran">
-                                <i class="fa fa fa-check"></i>
-                              </button>
+                              <input type="hidden" name="markUnpaid" value='1'>
+                                <button type="submit" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Rollback Unpaid">
+                                    <i class="fa fa fa-arrow-rotate-left"></i>
+                                </button>
                             </form>
-                            @elseif($angsuran->status == 1)
-                            <button type="button" class="btn btn-sm btn-alt-secondary disabled" data-bs-toggle="tooltip" title="Konfirmasi Sudah Melakukan Pembayaran">
-                              <i class="fa fa fa-check"></i>
-                            </button>
                             @elseif($angsuran->status == 2)
                             <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-toggle="tooltip" title="Unduh Bukti Pembayaran">
                               <i class="fa fa-fw fa-download"></i>
@@ -113,6 +118,39 @@ $title = 'Detail Pinjaman';
                       @endforeach
                     </tbody>
                   </table>
+                  <!-- Normal Block Modal -->
+                    <div class="modal" id="modal-block-normal" tabindex="-1" role="dialog" aria-labelledby="modal-block-normal" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="block block-rounded block-transparent mb-0">
+                            <form action="#" method="post" id="mark-paid-form">
+                            @csrf
+                            @method('PUT')
+                            <div class="block-header block-header-default">
+                                <h3 class="block-title">Approve Pembayaran</h3>
+                                <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                                </div>
+                            </div>
+                            <div class="block-content fs-sm">
+                                <input type="hidden" name="markPaid" value='1'>
+                                <label> Jumlah Pembayaran: </label> 
+                                <input type="text" name="jumlah" value="Rp. {{number_format(($pengajuan->jumlah_pinjaman*\App\Models\System::first()->bunga_pinjaman)/$pengajuan->tenor_pinjaman,2,',','.')}}" disabled class="form-control mb-3">   
+                                <label> Resi Pembayaran: </label>
+                                <textarea name="resi" id="" cols="30" rows="5" class="form-control mb-3" required></textarea>
+                            </div>
+                            <div class="block-content block-content-full text-end bg-body">
+                                <button type="button" class="btn btn-sm btn-alt-secondary me-1" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-sm btn-primary">Approve</button>
+                            </div>
+                            </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- END Normal Block Modal -->
                 </div>
               </div>
               <!-- END Striped Table -->
@@ -202,4 +240,13 @@ $title = 'Detail Pinjaman';
         <!-- END Page Content -->
       </main>
       <!-- END Main Container -->
+
+      <script>
+        function markPaid(id){
+            var frm = document.getElementById('mark-paid-form') || null;
+            if(frm) {
+                frm.action = "{{route('pembayaran.index')}}/"+id; 
+            }
+        }
+      </script>
 @endsection

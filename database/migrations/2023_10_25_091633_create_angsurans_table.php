@@ -23,6 +23,7 @@ class CreateAngsuransTable extends Migration
             $table->string('status');
             $table->string('bukti_url')->nullable();
             $table->string('paid_date')->nullable();
+            $table->text('resi')->nullable();
             $table->string('sisa_pinjaman');
             $table->timestamps();
         });

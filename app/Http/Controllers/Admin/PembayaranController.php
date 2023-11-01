@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PengajuanPinjaman;
 use App\Models\PengajuanPinjamanLog;
 use App\Models\Angsuran;
 use Auth;
 
-class PinjamanController extends Controller
+class PembayaranController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,8 @@ class PinjamanController extends Controller
      */
     public function index()
     {
-        $listPengajuan = PengajuanPinjaman::where('user_id', Auth::user()->id)->where('status_pinjaman', '>=', 3)->where('status_pinjaman', '<=', 5)->get();
-        return view('pinjaman', compact(
+        $listPengajuan = PengajuanPinjaman::where('status_pinjaman', '>=', 3)->where('status_pinjaman', '<=', 5)->get();
+        return view('admin.pembayaran', compact(
             'listPengajuan'
         ));
     }
@@ -59,7 +60,7 @@ class PinjamanController extends Controller
         if ($pengajuan->user_id != Auth::user()->id) {
             return "Error 403";
         }
-        return view('pinjaman-detail', compact(
+        return view('admin.catat-pembayaran', compact(
             'pengajuan',
             'approvalDoc',
             'angsuran',
@@ -87,11 +88,23 @@ class PinjamanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $angsuran = Angsuran::where('id', $id)->update([
-            'status' => 1
-        ]);
-        return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Konfirmasi pembayaran berhasil, pembayaran akan diverifikasi oleh finance!'});</script>");
-
+        if ($request->markUnpaid == 1) {
+            $angsuran = Angsuran::where('id', $id)->update([
+                'status' => 0
+            ]);
+            return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Status berhasil diubah menjadi unpaid!'});</script>");
+        }
+        $data = Angsuran::where('pinjaman_id', Angsuran::where('id', $id)->first()->pinjaman_id)->where('status', '2')->orderBy('id', 'DESC')->first();
+        if ($request->markPaid == 1) {
+            $angsuran = Angsuran::where('id', $id)->update([
+                'status' => 2,
+                'paid_date' => date('Y-m-d'),
+                'sisa_pinjaman' => $data->sisa_pinjaman - ($data->jumlah + $data->bunga),
+                'resi' => $request->resi
+            ]);
+            return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Status berhasil diubah menjadi unpaid!'});</script>");
+        }
+        
     }
 
     /**

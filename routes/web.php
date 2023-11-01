@@ -29,6 +29,7 @@ Route::group(['middleware' => ['role:super-admin']], function () {
     Route::prefix('admin')->group(function () {
         Route::resource('approval-pengajuan-pinjaman', App\Http\Controllers\Admin\ApprovalPengajuanPinjamanController::class);
         Route::resource('list-pengajuan', App\Http\Controllers\Admin\PengajuanPinjamanController::class);
+        Route::resource('pembayaran', App\Http\Controllers\Admin\PembayaranController::class);
     });
     Route::prefix('configuration')->group(function () {
         Route::get('users/approved/{id}', [App\Http\Controllers\UsersController::class, 'approvedUser'])->name('approvedUser');
