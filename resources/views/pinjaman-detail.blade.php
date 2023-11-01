@@ -192,6 +192,7 @@ $title = 'Detail Pinjaman';
                 </div>
                 <div class="block-content mb-3">
                     <a href="{{asset($approvalDoc->url_path)}}" class="btn btn-sm btn-outline-primary mb-3">{{$approvalDoc->url_label}}</a>
+                    <a href="#" class="btn btn-sm btn-outline-success mb-3">Doc Bukti Pencairan</a>
                     <a href="#" class="btn btn-sm btn-outline-warning mb-3">TopUp Pinjaman</a>
                 </div>
               </div>
