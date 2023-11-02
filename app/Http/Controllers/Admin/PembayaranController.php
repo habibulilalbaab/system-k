@@ -96,10 +96,17 @@ class PembayaranController extends Controller
         }
         $data = Angsuran::where('pinjaman_id', Angsuran::where('id', $id)->first()->pinjaman_id)->where('status', '2')->orderBy('id', 'DESC')->first();
         if ($request->markPaid == 1) {
+            try {
+                $sisa_pinjaman = $data->sisa_pinjaman - ($data->jumlah + $data->bunga);
+            } catch (\Throwable $th) {
+                //throw $th;
+                $data = Angsuran::where('id', $id)->orderBy('id', 'DESC')->first();
+                $sisa_pinjaman = $data->sisa_pinjaman - ($data->jumlah + $data->bunga);
+            }
             $angsuran = Angsuran::where('id', $id)->update([
                 'status' => 2,
                 'paid_date' => date('Y-m-d'),
-                'sisa_pinjaman' => $data->sisa_pinjaman - ($data->jumlah + $data->bunga),
+                'sisa_pinjaman' => $sisa_pinjaman,
                 'resi' => $request->resi
             ]);
             return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Status berhasil diubah menjadi unpaid!'});</script>");

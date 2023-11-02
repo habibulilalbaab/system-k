@@ -100,7 +100,18 @@ $title = 'Pembayaran Pinjaman';
                     <td><span class="text-danger">Ditolak</span></td>
                     @endif
                     <td>Rp. {{number_format($listPengajuan->jumlah_pinjaman,2,',','.')}}</td>
-                    <td><span class="text-success">Paid</span></td>
+                    @php
+                      $lastPaid = \App\Models\Angsuran::where('pinjaman_id', $listPengajuan->id)->where('status', '2')->orderBy('id', 'DESC')->first() ?? \App\Models\Angsuran::where('id', $listPengajuan->id)->orderBy('id', 'DESC')->first() ;
+                    @endphp
+                    @if($lastPaid->paid_date)
+                      @if(explode('-', $lastPaid->paid_date)[1] == date('m'))
+                      <td><span class="text-success">Paid</span></td>
+                      @else
+                      <td><span class="text-warning">Verify</span></td>
+                      @endif
+                    @else
+                    <td><span class="text-danger">Unpaid</span></td>
+                    @endif
                     <td>{{$listPengajuan->tenor_pinjaman}} bulan</td>
                     <td>
                       <a href="{{route('pembayaran.show', $listPengajuan->id)}}" class="btn btn-sm btn-outline-primary">Catat Pembayaran</a>
