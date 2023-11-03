@@ -90,7 +90,7 @@ $title = 'Pinjaman Saya';
                     @elseif($listPengajuan->status_pinjaman == 3)
                     <td><span class="text-warning">Menunggu Approval Finance</span></td>
                     @elseif($listPengajuan->status_pinjaman == 4)
-                    <td><span class="text-success">Approved, Sudah Dicairkan</span></td>
+                    <td><span class="text-success">Approved</span></td>
                     @elseif($listPengajuan->status_pinjaman == 5)
                     <td><span class="text-success">Lunas</span></td>
                     @elseif($listPengajuan->status_pinjaman == 6)
@@ -100,7 +100,7 @@ $title = 'Pinjaman Saya';
                     <td>{{$listPengajuan->tenor_pinjaman}} bulan</td>
                     <td>
                       <a href="{{route('pinjaman.show', $listPengajuan->id)}}" class="btn btn-sm btn-outline-success">Angsuran</a>
-                      <a href="#" class="btn btn-sm btn-outline-warning">TopUp</a>
+                      <a data-bs-toggle="modal" data-bs-target="#topup" class="btn btn-sm btn-outline-warning">TopUp</a>
                     </td>
                   </tr>
                   @endforeach
@@ -113,4 +113,40 @@ $title = 'Pinjaman Saya';
         <!-- END Page Content -->
       </main>
       <!-- END Main Container -->
+      <!-- Normal Block Modal -->
+      <div class="modal" id="topup" tabindex="-1" role="dialog" aria-labelledby="topup" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="block block-rounded block-transparent mb-0">
+              <form action="{{route('pembayaran.update', 0)}}" method="post" id="mark-paid-form">
+              @csrf
+              @method('PUT')
+              <div class="block-header block-header-default">
+                  <h3 class="block-title">TopUp Pinjaman</h3>
+                  <div class="block-options">
+                  <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                      <i class="fa fa-fw fa-times"></i>
+                  </button>
+                  </div>
+              </div>
+              <div class="block-content fs-sm">
+                  <label> Jumlah Pinjaman: </label>
+                  <input type="text" disabled class="form-control mb-3" value="test">
+                  <label> Tenor Lama (bulan): </label>
+                  <input type="text" disabled class="form-control mb-3" value="test">
+                  <label> Tenor Baru (bulan): </label>
+                  <input type="number" name="new_tenor" class="form-control mb-3">
+                  <label> Alasan TopUp Perpanjang Tenor Pinjaman: </label>
+                  <textarea name="resi" id="" cols="30" rows="5" class="form-control mb-3" required></textarea>
+              </div>
+              <div class="block-content block-content-full text-end bg-body">
+                  <button type="button" class="btn btn-sm btn-alt-secondary me-1" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-sm btn-primary">Ajukan</button>
+              </div>
+              </form>
+              </div>
+          </div>
+          </div>
+      </div>
+      <!-- END Normal Block Modal -->
 @endsection

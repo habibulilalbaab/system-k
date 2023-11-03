@@ -31,7 +31,7 @@ $title = 'Catat Pembayaran';
                     @elseif($pengajuan->status_pinjaman == 3)
                     <span class="text-warning">Menunggu Approval Finance</span>
                     @elseif($pengajuan->status_pinjaman == 4)
-                    <span class="text-success">Approved, Sudah Dicairkan</span>
+                    <span class="text-success">Approved</span>
                     @elseif($pengajuan->status_pinjaman == 5)
                     <span class="text-success">Lunas</span>
                     @elseif($pengajuan->status_pinjaman == 6)
@@ -59,6 +59,12 @@ $title = 'Catat Pembayaran';
                   <h3 class="block-title">Angsuran Pinjaman</h3>
                 </div>
                 <div class="block-content" style="font-size:11pt;">
+                @php
+                $pelunasan = \App\Models\Angsuran::where('pinjaman_id', $pengajuan->id)->where('status', '!=', '2')->get();
+                @endphp
+                @if($pelunasan->sum('jumlah')+$pelunasan->sum('bunga') != 0)
+                <button type="button" class="btn btn-sm btn-outline-success mb-3" data-bs-toggle="modal" data-bs-target="#approve-all" style="float:right;">Approve Semua</button>
+                @endif
                   <table class="table table-striped table-vcenter">
                     <thead>
                       <tr>
@@ -119,6 +125,39 @@ $title = 'Catat Pembayaran';
                     </tbody>
                   </table>
                   <!-- Normal Block Modal -->
+                    <div class="modal" id="approve-all" tabindex="-1" role="dialog" aria-labelledby="approve-all" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="block block-rounded block-transparent mb-0">
+                            <form action="{{route('pembayaran.update', $pengajuan->id)}}" method="post" id="mark-paid-form">
+                            @csrf
+                            @method('PUT')
+                            <div class="block-header block-header-default">
+                                <h3 class="block-title">Approve Semua Pembayaran</h3>
+                                <div class="block-options">
+                                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-fw fa-times"></i>
+                                </button>
+                                </div>
+                            </div>
+                            <div class="block-content fs-sm">
+                                <input type="hidden" name="markPaidAll" value='1'>
+                                <label> Jumlah Pembayaran: </label> 
+                                <input type="text" name="jumlah" value="Rp. {{number_format($pelunasan->sum('jumlah')+$pelunasan->sum('bunga'),2,',','.')}}" disabled class="form-control mb-3">   
+                                <label> Resi Pembayaran: </label>
+                                <textarea name="resi" id="" cols="30" rows="5" class="form-control mb-3" required></textarea>
+                            </div>
+                            <div class="block-content block-content-full text-end bg-body">
+                                <button type="button" class="btn btn-sm btn-alt-secondary me-1" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-sm btn-primary">Approve</button>
+                            </div>
+                            </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- END Normal Block Modal -->
+                  <!-- Normal Block Modal -->
                     <div class="modal" id="modal-block-normal" tabindex="-1" role="dialog" aria-labelledby="modal-block-normal" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -156,6 +195,53 @@ $title = 'Catat Pembayaran';
               <!-- END Striped Table -->
             </div>
             <div class="col-md-5 col-xl-4">
+              <!-- Products -->
+              <div class="block block-rounded">
+                <div class="block-header block-header-default">
+                  <h3 class="block-title">
+                    <i class="fa fa-briefcase text-muted me-1"></i> Data Peminjam
+                  </h3>
+                  <div class="block-options">
+                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                      <i class="si si-refresh"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="block-content">
+                  <div class="d-flex align-items-center push">
+                    <table>
+                      @php
+                      $userData = \App\Models\UserDetail::where('user_id', $pengajuan->user_id)->first();
+                      @endphp
+                      <tr>
+                        <td class="fw-semibold">Nama</td>
+                        <td>: {{\App\Models\User::where('id', $pengajuan->user_id)->first()->name}}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-semibold">Email</td>
+                        <td>: {{\App\Models\User::where('id', $pengajuan->user_id)->first()->email}}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-semibold">Jabatan</td>
+                        <td>: {{\App\Models\Jabatan::where('id', $userData->jabatan_id ?? 0)->first()->jabatan ?? '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-semibold">Karyawan</td>
+                        <td>: {{$userData->status_karyawan ?? '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-semibold">Alamat</td>
+                        <td>: {{$userData->address ?? '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-semibold">Payroll</td>
+                        <td>: Rp. {{number_format($userData->payroll ?? 0)}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- END Products -->
               <!-- Products -->
               <div class="block block-rounded">
                 <div class="block-header block-header-default">

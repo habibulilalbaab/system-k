@@ -57,9 +57,6 @@ class PembayaranController extends Controller
         $approvalDoc = PengajuanPinjamanLog::where('pengajuan_id', $pengajuan->id)->where('title', 'Approve dan Pencairan Pinjaman')->first();
         $angsuran = Angsuran::where('pinjaman_id', $id)->get();
         $sisaAngsuran = Angsuran::where('pinjaman_id', $id)->where('status', '2')->orderBy('id', 'DESC')->first() ?? Angsuran::where('pinjaman_id', $id)->orderBy('id', 'DESC')->first() ;
-        if ($pengajuan->user_id != Auth::user()->id) {
-            return "Error 403";
-        }
         return view('admin.catat-pembayaran', compact(
             'pengajuan',
             'approvalDoc',
@@ -109,7 +106,24 @@ class PembayaranController extends Controller
                 'sisa_pinjaman' => $sisa_pinjaman,
                 'resi' => $request->resi
             ]);
-            return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Status berhasil diubah menjadi unpaid!'});</script>");
+            if(Angsuran::where('pinjaman_id', Angsuran::where('id', $id)->first()->pinjaman_id)->where('status', '0')->orWhere('status', '1')->count() == 0){
+                PengajuanPinjaman::where('id', Angsuran::where('id', $id)->first()->pinjaman_id)->update([
+                    'status_pinjaman' => 5,
+                ]);
+            }
+            return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Verifikasi pembayaran berhasil!'});</script>");
+        }
+        if ($request->markPaidAll == 1) {
+            $angsuran = Angsuran::where('pinjaman_id', $id)->update([
+                'status' => 2,
+                'sisa_pinjaman' => 0,
+                'paid_date' => date('Y-m-d'),
+                'resi' => $request->resi
+            ]);
+            PengajuanPinjaman::where('id', $id)->update([
+                'status_pinjaman' => 5,
+            ]);
+            return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Pembayarn berhasil dikonfirmasi!'});</script>");
         }
         
     }

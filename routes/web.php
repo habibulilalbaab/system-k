@@ -24,6 +24,7 @@ Route::group(['middleware' => ['role:super-admin|karyawan']], function () {
     Route::resource('pinjaman', App\Http\Controllers\PinjamanController::class);
     Route::resource('pengajuan', App\Http\Controllers\PengajuanPinjamanController::class);
     Route::resource('dokumen-pengajuan', App\Http\Controllers\DokumenPinjamanController::class);
+    Route::resource('topup-pinjaman', App\Http\Controllers\TopUpPinjamanController::class);
 });
 Route::group(['middleware' => ['role:super-admin']], function () {
     Route::prefix('admin')->group(function () {

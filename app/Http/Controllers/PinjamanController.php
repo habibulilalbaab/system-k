@@ -87,9 +87,15 @@ class PinjamanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $angsuran = Angsuran::where('id', $id)->update([
-            'status' => 1
-        ]);
+        if ($request->type == 'all') {
+            $angsuran = Angsuran::where('pinjaman_id', $id)->update([
+                'status' => 1
+            ]);
+        }else {
+            $angsuran = Angsuran::where('id', $id)->update([
+                'status' => 1
+            ]);
+        }
         return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Konfirmasi pembayaran berhasil, pembayaran akan diverifikasi oleh finance!'});</script>");
 
     }

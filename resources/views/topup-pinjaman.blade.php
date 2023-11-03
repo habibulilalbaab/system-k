@@ -21,7 +21,7 @@
 @endsection
 
 @php 
-$title = 'Pengajuan Pinjaman';
+$title = 'TopUp Pinjaman';
 @endphp
 @section('content')
       <!-- Main Container -->
@@ -61,7 +61,7 @@ $title = 'Pengajuan Pinjaman';
           <!-- Dynamic Table Full Pagination -->
           <div class="block block-rounded">
             <div class="block-header block-header-default">
-              <h3 class="block-title">Semua Pengajuan</h3>
+              <h3 class="block-title">Semua Pengajuan TopUp</h3>
             </div>
             <div class="block-content block-content-full">
               <!-- DataTables init on table by adding .js-dataTable-full-pagination class, functionality is initialized in js/pages/be_tables_datatables.min.js which was auto compiled from _js/pages/be_tables_datatables.js -->
@@ -69,42 +69,22 @@ $title = 'Pengajuan Pinjaman';
                 <thead>
                   <tr>
                     <th class="text-center" style="width: 80px;">ID</th>
-                    <th>Tanggal</th>
-                    <th>Nama</th>
+                    <th>Pinjaman</th>
+                    <th>Type</th>
+                    <th>Tenor Lama</th>
+                    <th>Tenor Baru</th>
                     <th>Status</th>
-                    <th>Nominal</th>
-                    <th>Tenor</th>
-                    <th class="d-none d-sm-table-cell" style="width: 20%;">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($listPengajuan as $listPengajuan)
-                  <tr>
-                    <td>{{$listPengajuan->id}}</td>
-                    <td>{{$listPengajuan->created_at}}</td>
-                    <td>{{\App\Models\User::where('id', $listPengajuan->user_id)->first()->name}}</td>
-                    @if($listPengajuan->status_pinjaman == 0)
-                    <td><span class="text-warning">Draft</span></td>
-                    @elseif($listPengajuan->status_pinjaman == 1)
-                    <td><span class="text-info">Sudah Upload Dokumen</span></td>
-                    @elseif($listPengajuan->status_pinjaman == 2)
-                    <td><span class="text-warning">Menunggu Approval Ketua Koperasi</span></td>
-                    @elseif($listPengajuan->status_pinjaman == 3)
-                    <td><span class="text-warning">Menunggu Approval Finance</span></td>
-                    @elseif($listPengajuan->status_pinjaman == 4)
-                    <td><span class="text-success">Approved</span></td>
-                    @elseif($listPengajuan->status_pinjaman == 5)
-                    <td><span class="text-success">Lunas</span></td>
-                    @elseif($listPengajuan->status_pinjaman == 6)
-                    <td><span class="text-danger">Ditolak</span></td>
-                    @endif
-                    <td>Rp. {{number_format($listPengajuan->jumlah_pinjaman,2,',','.')}}</td>
-                    <td>{{$listPengajuan->tenor_pinjaman}} bulan</td>
-                    <td>
-                      <a href="{{route('pengajuan.show', $listPengajuan->id)}}" class="btn btn-sm btn-outline-primary">Detail Pengajuan</a>
-                    </td>
-                  </tr>
-                  @endforeach
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                 </tbody>
               </table>
             </div>

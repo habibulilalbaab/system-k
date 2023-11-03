@@ -95,7 +95,7 @@ $title = 'Pengajuan Pinjaman';
                     @elseif($listPengajuan->status_pinjaman == 3)
                     <td><span class="text-warning">Menunggu Approval Finance</span></td>
                     @elseif($listPengajuan->status_pinjaman == 4)
-                    <td><span class="text-success">Approved, Sudah Dicairkan</span></td>
+                    <td><span class="text-success">Approved</span></td>
                     @elseif($listPengajuan->status_pinjaman == 5)
                     <td><span class="text-success">Lunas</span></td>
                     @elseif($listPengajuan->status_pinjaman == 6)

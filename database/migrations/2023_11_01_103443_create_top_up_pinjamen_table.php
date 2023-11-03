@@ -16,6 +16,7 @@ class CreateTopUpPinjamenTable extends Migration
         Schema::create('top_up_pinjamen', function (Blueprint $table) {
             $table->id();
             $table->string('pinjaman_id');
+            $table->string('user_id');
             $table->string('angsuran_id');
             $table->string('topup_type');
             $table->string('tenor');

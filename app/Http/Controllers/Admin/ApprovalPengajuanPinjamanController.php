@@ -129,9 +129,6 @@ class ApprovalPengajuanPinjamanController extends Controller
     {
         $pengajuan = PengajuanPinjaman::where('id', $id)->first();
         $pengajuanlog = PengajuanPinjamanLog::where('pengajuan_id', $pengajuan->id)->orderBy('id', 'DESC')->get();
-        if ($pengajuan->user_id != Auth::user()->id) {
-            return "Error 403";
-        }
         return view('admin.approval-dokumen', compact(
             'pengajuan',
             'pengajuanlog'

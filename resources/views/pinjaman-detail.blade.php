@@ -31,7 +31,7 @@ $title = 'Detail Pinjaman';
                     @elseif($pengajuan->status_pinjaman == 3)
                     <span class="text-warning">Menunggu Approval Finance</span>
                     @elseif($pengajuan->status_pinjaman == 4)
-                    <span class="text-success">Approved, Sudah Dicairkan</span>
+                    <span class="text-success">Approved</span>
                     @elseif($pengajuan->status_pinjaman == 5)
                     <span class="text-success">Lunas</span>
                     @elseif($pengajuan->status_pinjaman == 6)
@@ -59,6 +59,12 @@ $title = 'Detail Pinjaman';
                   <h3 class="block-title">Angsuran Pinjaman</h3>
                 </div>
                 <div class="block-content" style="font-size:11pt;">
+                <form action="{{route('pinjaman.update', $pengajuan->id)}}" method="post">
+                  @csrf
+                  @method('PUT')
+                  <input type="hidden" name="type" value="all">
+                  <button type="submit" onclick="return confirm('Yakin ingin konfirmasi semua pembayaran ?');" class="btn btn-sm btn-outline-success mb-3" style="float:right;">Lunasi Semua</button>
+                </form>  
                   <table class="table table-striped table-vcenter">
                     <thead>
                       <tr>
@@ -118,6 +124,53 @@ $title = 'Detail Pinjaman';
               <!-- END Striped Table -->
             </div>
             <div class="col-md-5 col-xl-4">
+              <!-- Products -->
+              <div class="block block-rounded">
+                <div class="block-header block-header-default">
+                  <h3 class="block-title">
+                    <i class="fa fa-briefcase text-muted me-1"></i> Data Peminjam
+                  </h3>
+                  <div class="block-options">
+                    <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
+                      <i class="si si-refresh"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="block-content">
+                  <div class="d-flex align-items-center push">
+                    <table>
+                      @php
+                      $userData = \App\Models\UserDetail::where('user_id', $pengajuan->user_id)->first();
+                      @endphp
+                      <tr>
+                        <td class="fw-semibold">Nama</td>
+                        <td>: {{\App\Models\User::where('id', $pengajuan->user_id)->first()->name}}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-semibold">Email</td>
+                        <td>: {{\App\Models\User::where('id', $pengajuan->user_id)->first()->email}}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-semibold">Jabatan</td>
+                        <td>: {{\App\Models\Jabatan::where('id', $userData->jabatan_id ?? 0)->first()->jabatan ?? '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-semibold">Karyawan</td>
+                        <td>: {{$userData->status_karyawan ?? '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-semibold">Alamat</td>
+                        <td>: {{$userData->address ?? '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="fw-semibold">Payroll</td>
+                        <td>: Rp. {{number_format($userData->payroll ?? 0)}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- END Products -->
               <!-- Products -->
               <div class="block block-rounded">
                 <div class="block-header block-header-default">
@@ -192,7 +245,6 @@ $title = 'Detail Pinjaman';
                 </div>
                 <div class="block-content mb-3">
                     <a href="{{asset($approvalDoc->url_path)}}" class="btn btn-sm btn-outline-primary mb-3">{{$approvalDoc->url_label}}</a>
-                    <a href="#" class="btn btn-sm btn-outline-success mb-3">Doc Bukti Pencairan</a>
                     <a href="#" class="btn btn-sm btn-outline-warning mb-3">TopUp Pinjaman</a>
                 </div>
               </div>

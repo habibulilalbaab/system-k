@@ -19,11 +19,12 @@
                 </a>
               </li>
               <li class="nav-main-item">
-                <a class="nav-main-link" href="{{route('jabatan.index')}}">
+                <a class="nav-main-link" href="{{route('topup-pinjaman.index')}}">
                   <i class="nav-main-link-icon far fa-id-badge"></i>
                   <span class="nav-main-link-name">TopUp Pinjaman</span>
                 </a>
               </li>
+              @role('super-admin')
               <li class="nav-main-heading">Administrator</li>
               <li class="nav-main-item">
                 <a class="nav-main-link" href="{{route('list-pengajuan.index')}}">
@@ -49,7 +50,6 @@
                   <span class="nav-main-link-name">Catat Pembayaran</span>
                 </a>
               </li>
-              @role('super-admin')
               <li class="nav-main-heading">Configuration</li>
               <li class="nav-main-item">
                 <a class="nav-main-link" href="{{route('jabatan.index')}}">
