@@ -77,17 +77,15 @@
       <!-- Main Container -->
       <main id="main-container">
         <!-- Page Content -->
-        <div class="bg-image" style="background-image: url('/assets/media/photos/photo28@2x.jpg');">
-          <div class="row g-0 bg-primary-dark-op">
+        <div class="bg-image" style="background-image: url('/assets/media/photos/bg.png'); ">
+          <div class="row g-0 bg-primary-light-op">
             <!-- Meta Info Section -->
             <div class="hero-static col-lg-4 d-none d-lg-flex flex-column justify-content-center">
               <div class="p-4 p-xl-5 flex-grow-1 d-flex align-items-center">
                 <div class="w-100">
                   <a class="link-fx fw-semibold fs-2 text-white" href="/">
-                    {{env('APP_NAME')}}
                   </a>
                   <p class="text-white-75 me-xl-8 mt-2">
-                    Selamat datang, silahkan Sign In untuk mendapatkan akses dashoard !
                   </p>
                 </div>
               </div>
