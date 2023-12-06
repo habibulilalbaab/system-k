@@ -56,7 +56,7 @@ class PembayaranController extends Controller
         $pengajuan = PengajuanPinjaman::where('id', $id)->first();
         $approvalDoc = PengajuanPinjamanLog::where('pengajuan_id', $pengajuan->id)->where('title', 'Approve dan Pencairan Pinjaman')->first();
         $angsuran = Angsuran::where('pinjaman_id', $id)->get();
-        $sisaAngsuran = Angsuran::where('pinjaman_id', $id)->where('status', '2')->orderBy('id', 'DESC')->first() ?? Angsuran::where('pinjaman_id', $id)->orderBy('id', 'DESC')->first() ;
+        $sisaAngsuran = Angsuran::where('pinjaman_id', $id)->where('status', '2')->orderBy('id', 'DESC')->first() ?? Angsuran::where('pinjaman_id', $id)->orderBy('id', 'DESC')->first();
         return view('admin.catat-pembayaran', compact(
             'pengajuan',
             'approvalDoc',

@@ -17,9 +17,10 @@ class CreateTopUpPinjamenTable extends Migration
             $table->id();
             $table->string('pinjaman_id');
             $table->string('user_id');
-            $table->string('angsuran_id');
             $table->string('topup_type');
+            $table->string('sisa_pinjaman');
             $table->string('tenor');
+            $table->text('reason');
             $table->string('status');
             $table->timestamps();
         });
