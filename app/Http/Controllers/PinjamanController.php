@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\PengajuanPinjaman;
 use App\Models\PengajuanPinjamanLog;
 use App\Models\Angsuran;
+use App\Models\System;
 use Auth;
 
 class PinjamanController extends Controller
@@ -56,6 +57,9 @@ class PinjamanController extends Controller
         $approvalDoc = PengajuanPinjamanLog::where('pengajuan_id', $pengajuan->id)->where('title', 'Approve dan Pencairan Pinjaman')->first();
         $angsuran = Angsuran::where('pinjaman_id', $id)->get();
         $sisaAngsuran = Angsuran::where('pinjaman_id', $id)->where('status', '2')->orderBy('id', 'DESC')->first() ?? Angsuran::where('pinjaman_id', $id)->orderBy('id', 'DESC')->first() ;
+        $pokok = $pengajuan->jumlah_pinjaman / $pengajuan->tenor_pinjaman;
+        $bunga = ($pengajuan->jumlah_pinjaman * System::first()->bunga_pinjaman) / 100;
+        $cicilan = $pokok + $bunga;
         if ($pengajuan->user_id != Auth::user()->id) {
             return "Error 403";
         }
@@ -63,7 +67,8 @@ class PinjamanController extends Controller
             'pengajuan',
             'approvalDoc',
             'angsuran',
-            'sisaAngsuran'
+            'sisaAngsuran',
+            'cicilan'
         ));
     }
 

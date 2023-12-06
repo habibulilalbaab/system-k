@@ -103,16 +103,18 @@ class ApprovalPengajuanPinjamanController extends Controller
             // buat list angsuran
             $pinjaman = PengajuanPinjaman::where('id', $request->pengajuan_id)->first();
             $date = strtotime(date('F Y'));
-            $bunga = System::first()->bunga_pinjaman;
+            $jumlah = ($pinjaman->jumlah_pinjaman / $pinjaman->tenor_pinjaman);
+            $bunga = ($pinjaman->jumlah_pinjaman *System::first()->bunga_pinjaman)/100;
+            $cicilan = $jumlah + $bunga;
             for ($i=1; $i <= (int)$pinjaman->tenor_pinjaman; $i++) {
                 Angsuran::create([
                     'pinjaman_id' => $pinjaman->id,
                     'periode' => '[ Ke-'.$i.' ]',
                     'tanggal' => '25 '.date('M Y', strtotime("+".$i." month", $date)),
-                    'jumlah' => ($pinjaman->jumlah_pinjaman/$pinjaman->tenor_pinjaman),
-                    'bunga' => (($pinjaman->jumlah_pinjaman/$pinjaman->tenor_pinjaman)*$bunga)-($pinjaman->jumlah_pinjaman/$pinjaman->tenor_pinjaman),
+                    'jumlah' => $jumlah,
+                    'bunga' => $bunga,
                     'status' => 0,
-                    'sisa_pinjaman' => ($pinjaman->jumlah_pinjaman*$bunga),
+                    'sisa_pinjaman' => $cicilan* $pinjaman->tenor_pinjaman,
                 ]);
             }
             return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Upload dokumen verifikasi finance berhasil!'});</script>");
@@ -129,9 +131,13 @@ class ApprovalPengajuanPinjamanController extends Controller
     {
         $pengajuan = PengajuanPinjaman::where('id', $id)->first();
         $pengajuanlog = PengajuanPinjamanLog::where('pengajuan_id', $pengajuan->id)->orderBy('id', 'DESC')->get();
+        $pokok = $pengajuan->jumlah_pinjaman / $pengajuan->tenor_pinjaman;
+        $bunga = ($pengajuan->jumlah_pinjaman * System::first()->bunga_pinjaman) / 100;
+        $angsuran = $pokok + $bunga;
         return view('admin.approval-dokumen', compact(
             'pengajuan',
-            'pengajuanlog'
+            'pengajuanlog',
+            'angsuran'
         ));
     }
 

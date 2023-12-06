@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\PengajuanPinjaman;
 use App\Models\PengajuanPinjamanLog;
 use App\Models\Angsuran;
+use App\Models\System;
+
 use Auth;
 
 class PembayaranController extends Controller
@@ -56,12 +58,16 @@ class PembayaranController extends Controller
         $pengajuan = PengajuanPinjaman::where('id', $id)->first();
         $approvalDoc = PengajuanPinjamanLog::where('pengajuan_id', $pengajuan->id)->where('title', 'Approve dan Pencairan Pinjaman')->first();
         $angsuran = Angsuran::where('pinjaman_id', $id)->get();
+        $pokok = $pengajuan->jumlah_pinjaman / $pengajuan->tenor_pinjaman;
+        $bunga = ($pengajuan->jumlah_pinjaman * System::first()->bunga_pinjaman) / 100;
+        $cicilan = $pokok + $bunga;
         $sisaAngsuran = Angsuran::where('pinjaman_id', $id)->where('status', '2')->orderBy('id', 'DESC')->first() ?? Angsuran::where('pinjaman_id', $id)->orderBy('id', 'DESC')->first() ;
         return view('admin.catat-pembayaran', compact(
             'pengajuan',
             'approvalDoc',
             'angsuran',
-            'sisaAngsuran'
+            'sisaAngsuran',
+            'cicilan'
         ));
     }
 
