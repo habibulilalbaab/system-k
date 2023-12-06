@@ -136,8 +136,10 @@ $title = 'Pengajuan Pinjaman';
                   <label for="jumlah_pinjaman">Tenor Pinjaman (bulan)</label>
                   <input type="number" required class="form-control form-control-lg" name="tenor_pinjaman" id="tenor_pinjaman" placeholder="12">
                 </div>
-                <div class="mb-3">
+                <div class="mb-3" style="margin-bottom:5px;">
                   <button type="button" onclick="simulasiCicilan()" class="btn btn-sm btn-warning" id="simulasi_cicilan">Hitung Simulasi Cicilan</button> 
+                  <span class="text-success" id="total_pokok" style="float: right;margin-right: 20px;"></span><br>
+                  <span class="text-success" id="total_bunga" style="float: right;margin-right: 20px;"></span><br>
                   <span class="text-success" id="hasil_simulasi_cicilan" style="float: right;margin-right: 20px;"></span>
                 </div>
               </div>
@@ -151,8 +153,11 @@ $title = 'Pengajuan Pinjaman';
                   jumlah_pinjaman = document.getElementById("jumlah_pinjaman").value;
                   tenor_pinjaman = document.getElementById("tenor_pinjaman").value;
                   bunga = {{\App\Models\System::first()->bunga_pinjaman}};
-                  var simulasi = (jumlah_pinjaman*bunga)/tenor_pinjaman
-
+                  var total_bunga = (jumlah_pinjaman*bunga)/100;
+                  var total_pokok = jumlah_pinjaman/tenor_pinjaman;
+                  var simulasi = total_pokok+total_bunga;
+                  document.getElementById("total_pokok").innerHTML = "Pokok: Rp. "+total_pokok.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+" /bulan";
+                  document.getElementById("total_bunga").innerHTML = "Bunga: Rp. "+total_bunga.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+" /bulan";
                   document.getElementById("hasil_simulasi_cicilan").innerHTML = "Cicilan: Rp. "+simulasi.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')+" /bulan";
                 }
               </script>

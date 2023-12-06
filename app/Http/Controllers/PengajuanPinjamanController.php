@@ -83,13 +83,16 @@ class PengajuanPinjamanController extends Controller
         $user = Auth::user();
         $pengajuan = PengajuanPinjaman::where('id', $id)->first();
         $pengajuanlog = PengajuanPinjamanLog::where('pengajuan_id', $pengajuan->id)->orderBy('id', 'DESC')->get();
-
+        $pokok = $pengajuan->jumlah_pinjaman / $pengajuan->tenor_pinjaman;
+        $bunga = ($pengajuan->jumlah_pinjaman *System::first()->bunga_pinjaman)/100;
+        $angsuran = $pokok+$bunga;
         if ($pengajuan->user_id != Auth::user()->id AND !$user->hasRole('super-admin')) {
             return "Error 403";
         }
         return view('pengajuan-dokumen', compact(
             'pengajuan',
-            'pengajuanlog'
+            'pengajuanlog',
+            'angsuran'
         ));
     }
 
