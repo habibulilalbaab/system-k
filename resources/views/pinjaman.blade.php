@@ -100,7 +100,13 @@ $title = 'Pinjaman Saya';
                     <td>{{$listPengajuan->tenor_pinjaman}} bulan</td>
                     <td>
                       <a href="{{route('pinjaman.show', $listPengajuan->id)}}" class="btn btn-sm btn-outline-success">Angsuran</a>
-                      <a data-bs-toggle="modal" data-bs-target="#topup" class="btn btn-sm btn-outline-warning">TopUp</a>
+                      @php
+                      $sisaPinjaman = \App\Models\Angsuran::where('pinjaman_id', $listPengajuan->id)->where('status', '2')->orderBy('id', 'DESC')->first() ?? \App\Models\Angsuran::where('pinjaman_id', $listPengajuan->id)->orderBy('id', 'DESC')->first();
+                      $hasTopUp = \App\Models\TopUpPinjaman::where('pinjaman_id', $listPengajuan->id)->count();
+                      @endphp
+                      @if($sisaPinjaman->sisa_pinjaman > 0)
+                      <a data-bs-toggle="modal" data-bs-target="#topup" onclick="topup('{{$listPengajuan->id}}','Rp. {{number_format($listPengajuan->jumlah_pinjaman,2,',','.')}}','Rp. {{number_format($sisaPinjaman->sisa_pinjaman,2,',','.')}}', '{{$sisaPinjaman->sisa_pinjaman}}', '{{$listPengajuan->tenor_pinjaman}}')" class="btn btn-sm btn-outline-warning @if($hasTopUp > 0) disabled @endif">TopUp</a>
+                      @endif
                     </td>
                   </tr>
                   @endforeach
@@ -118,9 +124,8 @@ $title = 'Pinjaman Saya';
           <div class="modal-dialog" role="document">
           <div class="modal-content">
               <div class="block block-rounded block-transparent mb-0">
-              <form action="{{route('pembayaran.update', 0)}}" method="post" id="mark-paid-form">
+              <form action="#" method="post" id="formTopup">
               @csrf
-              @method('PUT')
               <div class="block-header block-header-default">
                   <h3 class="block-title">TopUp Pinjaman</h3>
                   <div class="block-options">
@@ -131,13 +136,18 @@ $title = 'Pinjaman Saya';
               </div>
               <div class="block-content fs-sm">
                   <label> Jumlah Pinjaman: </label>
-                  <input type="text" disabled class="form-control mb-3" value="test">
+                  <input type="text" disabled class="form-control mb-3" value="" id="topup_jumlahpinjaman">
+                  <label> Sisa Jumlah Pinjaman: </label>
+                  <input type="text" disabled class="form-control mb-3" value="" id="topup_sisajumlahpinjaman">
                   <label> Tenor Lama (bulan): </label>
-                  <input type="text" disabled class="form-control mb-3" value="test">
+                  <input type="text" disabled class="form-control mb-3" value="" id="topup_tenorlama">
                   <label> Tenor Baru (bulan): </label>
-                  <input type="number" name="new_tenor" class="form-control mb-3">
+                  <input type="number" name="new_tenor" class="form-control mb-3" required>
                   <label> Alasan TopUp Perpanjang Tenor Pinjaman: </label>
-                  <textarea name="resi" id="" cols="30" rows="5" class="form-control mb-3" required></textarea>
+                  <textarea name="reason" id="" cols="30" rows="5" class="form-control mb-3" required></textarea>
+                  <input type="hidden" name="pinjaman_id" id="topup_idpinjaman">
+                  <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                  <input type="hidden" name="sisa_pinjaman" id="topup_sisanominalpinjaman">
               </div>
               <div class="block-content block-content-full text-end bg-body">
                   <button type="button" class="btn btn-sm btn-alt-secondary me-1" data-bs-dismiss="modal">Cancel</button>
@@ -149,4 +159,14 @@ $title = 'Pinjaman Saya';
           </div>
       </div>
       <!-- END Normal Block Modal -->
+      <script>
+        function topup(id, jumlah, sisa, sisa_nominal, tenor){
+          document.getElementById("formTopup").action = "{{route('topup-pinjaman.store')}}"
+          document.getElementById("topup_jumlahpinjaman").value = jumlah;
+          document.getElementById("topup_sisajumlahpinjaman").value = sisa;
+          document.getElementById("topup_sisanominalpinjaman").value = sisa_nominal;
+          document.getElementById("topup_tenorlama").value = tenor;
+          document.getElementById("topup_idpinjaman").value = id;
+        }
+      </script>
 @endsection

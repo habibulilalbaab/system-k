@@ -39,7 +39,16 @@ class TopUpPinjamanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        TopUpPinjaman::create([
+            'pinjaman_id' => $request->pinjaman_id,
+            'user_id' => $request->user_id,
+            'topup_type' => 'tenor',
+            'reason' => $request->reason,
+            'sisa_pinjaman' => $request->sisa_pinjaman,
+            'tenor' => $request->new_tenor,
+            'status' => 0,
+        ]);
+        return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'TopUp berhasil diajukan, cek status di menu TopUp !'});</script>");
     }
 
     /**

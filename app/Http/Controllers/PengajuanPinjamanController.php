@@ -63,7 +63,7 @@ class PengajuanPinjamanController extends Controller
                 'description' => "Silahkan unduh dokumen dibawah ini kemudian lakukan tanda tangan, selanjutnya silahkan scan dan upload kembali di form dibawah ini. ",
                 'is_doc' => 1,
                 'is_url' => 1,
-                'url_path' => '/pinjaman/dokumen-pengajuan/'.$data->id,
+                'url_path' => '/dokumen-pengajuan/'.$data->id,
                 'url_label' => 'Download Dokumen',
             ]);
             return redirect()->route('pengajuan.show', $data->id)->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Pengajuan berhasil dilakukan silahkan lengkapi dokumen pengajuan!'});</script>");
