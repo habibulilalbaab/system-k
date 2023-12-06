@@ -188,7 +188,7 @@ $title = 'Dokumen Pengajuan Pinjaman';
                     </div>
                     <div class="flex-grow-1">
                       <div class="fw-semibold">Angsuran perbulan</div>
-                      <div class="fs-sm">Rp. {{number_format(($pengajuan->jumlah_pinjaman*\App\Models\System::first()->bunga_pinjaman)/$pengajuan->tenor_pinjaman,2,',','.')}}</div>
+                      <div class="fs-sm">Rp. {{number_format($angsuran,2,',','.')}}</div>
                     </div>
                   </div>
                 </div>

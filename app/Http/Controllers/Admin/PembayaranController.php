@@ -91,26 +91,43 @@ class PembayaranController extends Controller
             ]);
             return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Status berhasil diubah menjadi unpaid!'});</script>");
         }
-        $data = Angsuran::where('pinjaman_id', Angsuran::where('id', $id)->first()->pinjaman_id)->where('status', '2')->orderBy('id', 'DESC')->first();
+
+        $data = Angsuran::where('pinjaman_id', $id)->where('status', '2')->orderBy('id', 'DESC')->first();
         if ($request->markPaid == 1) {
-            try {
-                $sisa_pinjaman = $data->sisa_pinjaman - ($data->jumlah + $data->bunga);
-            } catch (\Throwable $th) {
-                //throw $th;
-                $data = Angsuran::where('id', $id)->orderBy('id', 'DESC')->first();
-                $sisa_pinjaman = $data->sisa_pinjaman - ($data->jumlah + $data->bunga);
-            }
-            $angsuran = Angsuran::where('id', $id)->update([
-                'status' => 2,
-                'paid_date' => date('Y-m-d'),
-                'sisa_pinjaman' => $sisa_pinjaman,
-                'resi' => $request->resi
-            ]);
-            if(Angsuran::where('pinjaman_id', Angsuran::where('id', $id)->first()->pinjaman_id)->where('status', '0')->orWhere('status', '1')->count() == 0){
-                PengajuanPinjaman::where('id', Angsuran::where('id', $id)->first()->pinjaman_id)->update([
-                    'status_pinjaman' => 5,
+            if (!empty($data)) {
+                // dd($data);
+                $angsuran_id = $data->id + 1;
+                try {
+                    $sisa_pinjaman = $data->sisa_pinjaman - ($data->jumlah + $data->bunga);
+                } catch (\Throwable $th) {
+                    //throw $th;
+                    $data = Angsuran::where('id', $id)->orderBy('id', 'DESC')->first();
+                    $sisa_pinjaman = $data->sisa_pinjaman - ($data->jumlah + $data->bunga);
+                }
+                $angsuran = Angsuran::where('id', $angsuran_id)->update([
+                    'status' => 2,
+                    'paid_date' => date('Y-m-d'),
+                    'sisa_pinjaman' => $sisa_pinjaman,
+                    'resi' => $request->resi
                 ]);
+                if (Angsuran::where('pinjaman_id', Angsuran::where('id', $id)->first()->pinjaman_id)->where('status', '0')->orWhere('status', '1')->count() == 0) {
+                    PengajuanPinjaman::where('id', Angsuran::where('id', $id)->first()->pinjaman_id)->update([
+                        'status_pinjaman' => 5,
+                    ]);
+                }
+            }else{
+                $data = Angsuran::where('pinjaman_id', $id)->orderBy('id', 'ASC')->first();
+                $sisa_pinjaman = $data->sisa_pinjaman - ($data->jumlah + $data->bunga);
+                $angsuran = Angsuran::where('id', $data->id)->update([
+                    'status' => 2,
+                    'paid_date' => date('Y-m-d'),
+                    'sisa_pinjaman' => $sisa_pinjaman,
+                    'resi' => $request->resi
+                ]);
+                // dd($data);
+
             }
+           
             return redirect()->back()->with('result', "<script type='text/javascript'>window.onload=One.helpers('jq-notify', {type: 'success', icon: 'fa fa-check me-1', message: 'Verifikasi pembayaran berhasil!'});</script>");
         }
         if ($request->markPaidAll == 1) {
