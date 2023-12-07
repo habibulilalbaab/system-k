@@ -176,7 +176,7 @@ $title = 'Catat Pembayaran';
                             <div class="block-content fs-sm">
                                 <input type="hidden" name="markPaid" value='1'>
                                 <label> Jumlah Pembayaran: </label> 
-                                <input type="text" name="jumlah" value="Rp. {{number_format(($pengajuan->jumlah_pinjaman*\App\Models\System::first()->bunga_pinjaman)/$pengajuan->tenor_pinjaman,2,',','.')}}" disabled class="form-control mb-3">   
+                                <input type="text" name="jumlah" value="Rp. {{number_format($cicilan,2,',','.')}}" disabled class="form-control mb-3">   
                                 <label> Resi Pembayaran: </label>
                                 <textarea name="resi" id="" cols="30" rows="5" class="form-control mb-3" required></textarea>
                             </div>
