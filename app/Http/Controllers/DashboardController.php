@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Angsuran;
+use App\Models\ApprovedUser;
+use App\Models\PengajuanPinjaman;
 use Illuminate\Http\Request;
-
+use Auth;
 class DashboardController extends Controller
 {
     public function __construct()
@@ -17,7 +20,14 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        // $user_id = Auth()->user()->id;
+        $debitur = PengajuanPinjaman::where('status_pinjaman',4)->count();
+        $approval_ketua = PengajuanPinjaman::where('status_pinjaman', 2)->count();
+        $approval_finance = PengajuanPinjaman::where('status_pinjaman', 3)->count();
+        $angsuran = Angsuran::where('status', 1)->count();
+        $user = ApprovedUser::where('approved', 0)->count();
+
+        return view('dashboard', compact('debitur', 'approval_ketua','approval_finance', 'user','angsuran'));
     }
 
     /**
