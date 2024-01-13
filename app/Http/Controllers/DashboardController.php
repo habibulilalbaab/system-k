@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Angsuran;
+use App\Models\User;
 use App\Models\ApprovedUser;
 use App\Models\PengajuanPinjaman;
 use Illuminate\Http\Request;
@@ -25,7 +26,8 @@ class DashboardController extends Controller
         $approval_ketua = PengajuanPinjaman::where('status_pinjaman', 2)->count();
         $approval_finance = PengajuanPinjaman::where('status_pinjaman', 3)->count();
         $angsuran = Angsuran::where('status', 1)->count();
-        $user = ApprovedUser::where('approved', 0)->count();
+        $user_id = ApprovedUser::pluck('user_id')->all();
+        $user = User::whereNotIn('id',$user_id)->count();
 
         return view('dashboard', compact('debitur', 'approval_ketua','approval_finance', 'user','angsuran'));
     }

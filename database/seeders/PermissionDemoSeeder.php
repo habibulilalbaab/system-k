@@ -35,8 +35,8 @@ class PermissionDemoSeeder extends Seeder
         //assign first user as superadmin
         // create demo users
         $userAsSuperadmin = User::factory()->create([
-            'name' => 'Development',
-            'email' => 'dev@computing.id',
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
             'password' => bcrypt('12345678')
         ]);
         $userAsSuperadmin->assignRole($superadminRole);
@@ -55,7 +55,7 @@ class PermissionDemoSeeder extends Seeder
 
         $userKaryawan = User::factory()->create([
             'name' => 'Karyawan',
-            'email' => 'karyawan@computing.id',
+            'email' => 'karyawan@gmail.com',
             'password' => bcrypt('12345678')
         ]);
         $userKaryawan->assignRole($karyawanRole);
