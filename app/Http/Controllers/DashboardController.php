@@ -8,6 +8,7 @@ use App\Models\ApprovedUser;
 use App\Models\PengajuanPinjaman;
 use Illuminate\Http\Request;
 use Auth;
+use DB;
 class DashboardController extends Controller
 {
     public function __construct()
@@ -22,14 +23,28 @@ class DashboardController extends Controller
     public function index()
     {
         // $user_id = Auth()->user()->id;
+        $id = Auth()->user()->id;
+        $getRole = DB::table('model_has_roles')->where('model_id', $id)->first();
+        $role = $getRole->role_id;
         $debitur = PengajuanPinjaman::where('status_pinjaman',4)->count();
         $approval_ketua = PengajuanPinjaman::where('status_pinjaman', 2)->count();
         $approval_finance = PengajuanPinjaman::where('status_pinjaman', 3)->count();
         $angsuran = Angsuran::where('status', 1)->count();
         $user_id = ApprovedUser::pluck('user_id')->all();
         $user = User::whereNotIn('id',$user_id)->count();
-
-        return view('dashboard', compact('debitur', 'approval_ketua','approval_finance', 'user','angsuran'));
+        if($role !=1){
+            $pinjaman = PengajuanPinjaman::select('tenor_pinjaman','id')->where('user_id', $id)->first();
+            $tenor_pinjaman = $pinjaman->tenor_pinjaman;
+            $bayar = Angsuran::where('pinjaman_id',$pinjaman->id)->where('status',2)->count();
+            $kurang = $tenor_pinjaman-$bayar;
+        }else{
+            $pinjaman = 0;
+            $tenor_pinjaman = 0;
+            $bayar = 0;
+            $kurang = 0;
+        }
+        // dd($bayar);
+        return view('dashboard', compact('debitur', 'approval_ketua','approval_finance', 'user','angsuran','role','tenor_pinjaman','bayar','kurang'));
     }
 
     /**

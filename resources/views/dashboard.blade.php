@@ -234,28 +234,28 @@ $title = 'Dashboard';
 						<div class="infobox-3 nunito">
 							<h5 class="info-heading text-right mb-0">{{ $debitur }}</h5>
 							<p class="info-text text-right mb-3">Total Debitur Diterima<br><br><br></p>
-							<a class="info-link mb-0 text-xs" href="">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+							<a class="info-link mb-0 text-xs" href="{{route('list-pengajuan.index')}}">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
 						</div>
 					</div>
 					<div class="col-md-6 col-sm-12 col-lg-3">
 						<div class="infobox-3 nunito">
 							<h5 class="info-heading text-right mb-0">{{ $approval_ketua }}</h5>
 							<p class="info-text text-right mb-3">Total Debitur Menunggu Approval Ketua Koperasi</p>
-							<a class="info-link mb-0 text-xs" href="">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+							<a class="info-link mb-0 text-xs" href="{{route('list-pengajuan.index')}}">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
 						</div>
 					</div>
 					<div class="col-md-6 col-sm-12 col-lg-3">
 						<div class="infobox-3 nunito">
 							<h5 class="info-heading text-right mb-0">{{ $approval_ketua }}</h5>
 							<p class="info-text text-right mb-3">Total Debitur Menunggu Approval Ketua Finance</p>
-							<a class="info-link mb-0 text-xs" href="">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+							<a class="info-link mb-0 text-xs" href="{{route('list-pengajuan.index')}}">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
 						</div>
 					</div>
 					<div class="col-md-6 col-sm-12 col-lg-3">
 						<div class="infobox-3 nunito">
 							<h5 class="info-heading text-right mb-0">{{ $angsuran }}</h5>
 							<p class="info-text text-right mb-3">Total Angsuran Menunggu Approval <br><br></p>
-							<a class="info-link mb-0 text-xs" href="">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+							<a class="info-link mb-0 text-xs" href="{{route('pembayaran.index')}}">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
 						</div>
 					</div>
 				</div>
@@ -264,10 +264,36 @@ $title = 'Dashboard';
 						<div class="infobox-3 nunito">
 							<h5 class="info-heading text-right mb-0">{{ $user }}</h5>
 							<p class="info-text text-right mb-3">Total User Menunggu Approval</p>
-							<a class="info-link mb-0 text-xs" href="">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+							<a class="info-link mb-0 text-xs" href="{{route('users.index')}}">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
 						</div>
 					</div>
 					
+				</div>
+			</div>
+      @else
+      	<div class="container-dashboard pl-4 pr-4">
+				<div class="row mt-7">
+					<div class="col-md-6 col-sm-12 col-lg-3">
+						<div class="infobox-3 nunito">
+							<h5 class="info-heading text-right mb-0">{{ $tenor_pinjaman }}</h5>
+							<p class="info-text text-right mb-3">Tenor Pinjaman (bulan)<br><br></p>
+							<a class="info-link mb-0 text-xs" href="{{route('pinjaman.index')}}">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-12 col-lg-3">
+						<div class="infobox-3 nunito">
+							<h5 class="info-heading text-right mb-0">{{ $bayar }}</h5>
+							<p class="info-text text-right mb-3">Total Pembayaran (bulan) <br><br></p>
+							<a class="info-link mb-0 text-xs" href="{{route('pinjaman.index')}}">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-12 col-lg-3">
+						<div class="infobox-3 nunito">
+							<h5 class="info-heading text-right mb-0">{{ $kurang }}</h5>
+							<p class="info-text text-right mb-3">Total Kekurangan Bayar (bulan)</p>
+							<a class="info-link mb-0 text-xs" href="{{route('pinjaman.index')}}">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+						</div>
+					</div>
 				</div>
 			</div>
       @endif
