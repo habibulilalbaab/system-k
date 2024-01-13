@@ -233,7 +233,7 @@ $title = 'Dashboard';
 					<div class="col-md-6 col-sm-12 col-lg-3">
 						<div class="infobox-3 nunito">
 							<h5 class="info-heading text-right mb-0">{{ $debitur }}</h5>
-							<p class="info-text text-right mb-3">Total Debitur Diterima<br><br></p>
+							<p class="info-text text-right mb-3">Total Debitur Diterima<br><br><br></p>
 							<a class="info-link mb-0 text-xs" href="">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
 						</div>
 					</div>
@@ -254,7 +254,7 @@ $title = 'Dashboard';
 					<div class="col-md-6 col-sm-12 col-lg-3">
 						<div class="infobox-3 nunito">
 							<h5 class="info-heading text-right mb-0">{{ $angsuran }}</h5>
-							<p class="info-text text-right mb-3">Total Angsuran Menunggu Approval</p>
+							<p class="info-text text-right mb-3">Total Angsuran Menunggu Approval <br><br></p>
 							<a class="info-link mb-0 text-xs" href="">Lihat Semua Data <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
 						</div>
 					</div>
