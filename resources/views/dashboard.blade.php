@@ -227,6 +227,7 @@ $title = 'Dashboard';
         <!-- Page Content -->
         <div class="content">
           @can('view dashboard')
+      @if ($role == 1)
 			<div class="container-dashboard pl-4 pr-4">
 				<div class="row mt-7">
 					<div class="col-md-6 col-sm-12 col-lg-3">
@@ -269,6 +270,7 @@ $title = 'Dashboard';
 					
 				</div>
 			</div>
+      @endif
 		@endcan
         </div>
         <!-- END Page Content -->
