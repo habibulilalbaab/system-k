@@ -34,9 +34,15 @@ class DashboardController extends Controller
         $user = User::whereNotIn('id',$user_id)->count();
         if($role !=1){
             $pinjaman = PengajuanPinjaman::select('tenor_pinjaman','id')->where('user_id', $id)->first();
-            $tenor_pinjaman = $pinjaman->tenor_pinjaman;
-            $bayar = Angsuran::where('pinjaman_id',$pinjaman->id)->where('status',2)->count();
-            $kurang = $tenor_pinjaman-$bayar;
+            if(!empty($pinjaman)){
+                $tenor_pinjaman = $pinjaman->tenor_pinjaman;
+                $bayar = Angsuran::where('pinjaman_id',$pinjaman->id)->where('status',2)->count();
+                $kurang = $tenor_pinjaman-$bayar;
+            }else{
+                $tenor_pinjaman = 0;
+                $bayar = 0;
+                $kurang = 0; 
+            }
         }else{
             $pinjaman = 0;
             $tenor_pinjaman = 0;
